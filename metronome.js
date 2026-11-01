@@ -2,10 +2,11 @@ let audioContext = null;
 let isPlaying = false;
 let startTime;
 let currentTwelveletNote;
-let tempo = 120.0;
+let tempo = 60.0;
 let meter = 4;
 let masterVolume = 0.5;
 let lookahead = 25.0;
+let accentVolume = 1;
 
 let scheduleAheadTime = 0.1;
 
@@ -14,6 +15,29 @@ let noteLength = 0.05;
 const notesInQueue = [];
 
 let timeWorker = null;
+
+const bpmDisplay = document.getElementById('bpmDisplay')
+const bpmSelector = document.getElementById('bpmSelector')
+const minusButton = document.getElementById('minusButton')
+const plusButton = document.getElementById('plusButton')
+
+bpmSelector.addEventListener('change', (e) => {
+  tempo = e.target.value
+  bpmDisplay.innerHTML = e.target.value
+
+  return () => {
+    bpmSelector.removeEventListener('change', () => {
+      tempo = e.target.value
+      bpmDisplay.innerHTML = e.target.value
+    })
+  }
+})
+
+function reset() {
+  tempo = 60;
+  bpmDisplay.innerHTML = 60;
+  bpmSelector.value = 60
+}
 
 function maxBeats(){
   const beats = (meter * 12);
@@ -30,19 +54,42 @@ function nextTwelvelet(){
   }
 }
 
-function scheduleNote(beatNumber, time){
-  notesInQueue.push({ note: beatNumber, time: time });
-  console.log(notesInQueue, 'notes in queue')
-
-  const osc = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
-
-  osc.connect(gainNode)
-  gainNode.connect(audioContext.destination)
-
-  osc.start(time);
-  osc.stop(time + noteLength)
+function calcVolume(beatVolume) {
+  return (beatVolume * masterVolume)
 }
+
+
+function scheduleNote(beatNumber, time) {
+  notesInQueue.push({ note: beatNumber, time: time });
+
+  if (beatNumber % 12 === 0) {
+
+    const osc = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    osc.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    if (beatNumber % maxBeats() === 0) {
+      if (accentVolume > 0.25) {
+        osc.frequency.value = 880.0;
+        gainNode.gain.value = calcVolume(accentVolume);
+      } else {
+        gainNode.gain.value = 0;
+      }
+    }
+
+    else {
+      osc.frequency.value = 880.0;
+      gainNode.gain.value = calcVolume(accentVolume);
+    }
+
+    osc.start(time);
+    osc.stop(time + noteLength);
+  }
+}
+
+
 
 function scheduler() {
   while (nextNoteTime < audioContext.currentTime + scheduleAheadTime) {

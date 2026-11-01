@@ -3,11 +3,18 @@
         <meta charset="UTF-8">
         <title>Metronome test</title>
         <link rel="stylesheet" href="style.css">
-        <script src="metronome.js" ></script>
+        <script defer src="metronome.js" ></script>
     </head>
     <body>
         <div class="metronome">
+            <div class="tempoSelectorWrapper">
+                <span role="button" class="tempoButtonMinus" aria-label="decrease tempo by 1" id="minusButton"></span>
+            <input type="range" min="40" max="240" value="60" id="bpmSelector" class="bpmSelector"/>
+            <span role="button" class="tempoButtonPlus" aria-label="increase tempo by 1" id="plusButton"></span>
+            </div>
+            <h4 id="bpmDisplay"><output name="bpm" id="bpm">60</output></h4>
             <button onclick="play()">Play/Stop</button>
+            <button onClick="reset()">Reset</button>
         </div>
     </body>
 </html>
