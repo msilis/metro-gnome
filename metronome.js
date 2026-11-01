@@ -33,6 +33,18 @@ bpmSelector.addEventListener('change', (e) => {
   }
 })
 
+minusButton.addEventListener('click', () => {
+  tempo -= 1
+  bpmDisplay.innerHTML = tempo;
+  bpmSelector.value = tempo;
+})
+
+plusButton.addEventListener('click', () => {
+  tempo += 1;
+  bpmDisplay.innerHTML = tempo;
+  bpmSelector.value = tempo;
+})
+
 function reset() {
   tempo = 60;
   bpmDisplay.innerHTML = 60;

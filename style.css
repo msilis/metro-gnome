@@ -6,6 +6,10 @@ body {
 }
 .metronome {
     padding: 1rem;
+    outline: 2px solid white;
+    border-radius: 10px;
+    width: fit-content;
+    box-shadow: 4px 4px 4px white;
 }
 
 .bpmSelector {
@@ -71,4 +75,9 @@ body {
 
 .tempoButtonPlus:hover {
     cursor: pointer;
+}
+
+.tempoDisplay {
+    color: white;
+    font-weight: bold;
 }
