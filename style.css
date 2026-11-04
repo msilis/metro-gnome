@@ -108,9 +108,10 @@ body {
     transition: background-color .25s ease-in-out;
 
     &:hover {
+        cursor: pointer;
         background-color: lightblue;
-
     }
+
 }
 
 /* TIMER STYLES */
@@ -123,6 +124,7 @@ body {
     box-shadow: 4px 4px 4px white;
     display: flex;
     flex-direction: column;
+    gap: .5rem;
 }
 
 .timerButtonContainer {
@@ -142,6 +144,16 @@ body {
         cursor: pointer;
     }
 
+    &:hover:disabled {
+        cursor: not-allowed;
+    }
+
+}
+
+.displayWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
 }
 
 .timeDisplay {

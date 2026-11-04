@@ -23,7 +23,10 @@
 
         </div>
         <div class="timer">
-            <p class="timeDisplay" id="timeDisplay">10:00</p>
+            <div class="displayWrapper">
+                <p class="timeDisplay" id="timeDisplay">10:00</p>
+                <input type="number" step="5" id="timeInput" value="30" min="0" max="60"/>
+            </div>
             <div class="timerButtonContainer">
                 <button id="timerStartButton">Start</button>
                 <button id="timerPauseButton">Pause</button>
