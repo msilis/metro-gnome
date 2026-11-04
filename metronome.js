@@ -16,14 +16,16 @@ const notesInQueue = [];
 
 let timeWorker = null;
 
+const startButton = document.getElementById('startButton')
 const bpmDisplay = document.getElementById('bpmDisplay')
 const bpmSelector = document.getElementById('bpmSelector')
 const minusButton = document.getElementById('minusButton')
 const plusButton = document.getElementById('plusButton')
+const bpm = document.getElementById('bpm')
 
 bpmSelector.addEventListener('change', (e) => {
   tempo = e.target.value
-  bpmDisplay.innerHTML = e.target.value
+  bpm.innerHTML = e.target.value
 
   return () => {
     bpmSelector.removeEventListener('change', () => {
@@ -33,21 +35,31 @@ bpmSelector.addEventListener('change', (e) => {
   }
 })
 
-minusButton.addEventListener('click', () => {
+const decreaseTempoByOne = () => {
   tempo -= 1
-  bpmDisplay.innerHTML = tempo;
+  bpm.innerHTML = tempo;
   bpmSelector.value = tempo;
+}
+
+minusButton.addEventListener('click', decreaseTempoByOne)
+minusButton.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') decreaseTempoByOne()
 })
 
-plusButton.addEventListener('click', () => {
+const increaseTempoByOne = () => {
   tempo += 1;
-  bpmDisplay.innerHTML = tempo;
+  bpm.innerHTML = tempo;
   bpmSelector.value = tempo;
+}
+
+plusButton.addEventListener('click', increaseTempoByOne)
+plusButton.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') increaseTempoByOne()
 })
 
 function reset() {
   tempo = 60;
-  bpmDisplay.innerHTML = 60;
+  bpm.innerHTML = 60;
   bpmSelector.value = 60
 }
 
@@ -121,6 +133,11 @@ function play() {
     timeWorker.postMessage('stop')
   }
 }
+
+startButton.addEventListener('click', () => {
+  play()
+  startButton.innerHTML = isPlaying ? 'Stop' : 'Start'
+})
 
 function init() {
   audioContext = new AudioContext();

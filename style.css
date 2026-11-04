@@ -8,8 +8,10 @@ body {
     padding: 1rem;
     outline: 2px solid white;
     border-radius: 10px;
-    width: fit-content;
+    max-width: fit-content;
     box-shadow: 4px 4px 4px white;
+    display: flex;
+    flex-direction: column;
 }
 
 .bpmSelector {
@@ -17,8 +19,16 @@ body {
 }
 
 #bpmDisplay {
+    display: flex;
     color: white;
     font-size: 1.75rem;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.bpmTag {
+    font-size: 1.5rem;
+    padding-left: .5rem;
 }
 
 .tempoButtonMinus {
@@ -70,7 +80,7 @@ body {
     width: 1rem;
     height: 1px;
     background-color: white;
-    transform: rotate(90deg) translateX(-4px) translateY(4px);
+    transform: rotate(90deg) translateX(-4px) translateY(5px);
 }
 
 .tempoButtonPlus:hover {
@@ -80,4 +90,22 @@ body {
 .tempoDisplay {
     color: white;
     font-weight: bold;
+}
+
+.controlButtonContainer {
+    display: flex;
+    gap: 1rem;
+}
+
+.controlButton {
+    min-width: 3.5rem;
+    border: none;
+    background-color: white;
+    border-radius: 10px;
+    transition: background-color .25s ease-in-out;
+
+    &:hover {
+        background-color: lightblue;
+
+    }
 }
