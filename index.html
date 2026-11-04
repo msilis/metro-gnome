@@ -4,6 +4,7 @@
         <title>Metronome test</title>
         <link rel="stylesheet" href="style.css">
         <script defer src="metronome.js" ></script>
+        <script defer src="timer.js"></script>
     </head>
     <body>
         <div class="metronome">
@@ -19,6 +20,16 @@
                 <button id="startButton" class="controlButton">Start</button>
                 <button onClick="reset()" class="controlButton">Reset</button>
             </div>
+
+        </div>
+        <div class="timer">
+            <p class="timeDisplay" id="timeDisplay">10:00</p>
+            <div class="timerButtonContainer">
+                <button id="timerStartButton">Start</button>
+                <button id="timerPauseButton">Pause</button>
+                <button id="timerResetButton">Reset</button>
+            </div>
+
 
         </div>
     </body>
