@@ -21,5 +21,3 @@ self.onmessage = function (e) {
     timerId = null
   }
 }
-
-postMessage('Hello there')
