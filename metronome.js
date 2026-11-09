@@ -29,7 +29,7 @@ bpmSelector.addEventListener('change', (e) => {
 
   return () => {
     bpmSelector.removeEventListener('change', () => {
-      tempo = e.target.value
+      tempo = Number(e.target.value)
       bpmDisplay.innerHTML = e.target.value
     })
   }
