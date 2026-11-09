@@ -24,7 +24,7 @@ const plusButton = document.getElementById('plusButton')
 const bpm = document.getElementById('bpm')
 
 bpmSelector.addEventListener('change', (e) => {
-  tempo = e.target.value
+  tempo = Number(e.target.value)
   bpm.innerHTML = e.target.value
 
   return () => {
@@ -36,6 +36,7 @@ bpmSelector.addEventListener('change', (e) => {
 })
 
 const decreaseTempoByOne = () => {
+  if (tempo < 41) return;
   tempo -= 1
   bpm.innerHTML = tempo;
   bpmSelector.value = tempo;
@@ -47,9 +48,12 @@ minusButton.addEventListener('keydown', (e) => {
 })
 
 const increaseTempoByOne = () => {
-  tempo += 1;
-  bpm.innerHTML = tempo;
-  bpmSelector.value = tempo;
+  if (tempo <= 239) {
+    tempo += 1;
+    bpm.innerHTML = tempo;
+    bpmSelector.value = tempo;
+  } else return
+
 }
 
 plusButton.addEventListener('click', increaseTempoByOne)
