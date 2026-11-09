@@ -9,34 +9,40 @@
         <script defer src="recorder.js"></script>
     </head>
     <body>
-        <div class="timer">
-            <div class="displayWrapper">
-                <p class="timeDisplay" id="timeDisplay">10:00</p>
-                <input type="number" step="5" id="timeInput" min="0" max="60" value="30"/>
-            </div>
-            <div class="timerButtonContainer">
-                <button id="timerStartButton">Start</button>
-                <button id="timerPauseButton">Pause</button>
-                <button id="timerResetButton">Reset</button>
-            </div>
+        <h3 class="title">August and Archie's Practice Tools //</h3>
+        <div class="firstRow">
+            <div class="metronome">
+                <div class="tempoSelectorWrapper">
+                    <span role="button" class="tempoButtonMinus" aria-label="decrease tempo by 1" id="minusButton" tabindex="1"></span>
+                    <p class="tempoDisplay">40</p>
+                <input type="range" min="40" max="240" value="60" id="bpmSelector" class="bpmSelector"/>
+                <p class="tempoDisplay">240</p>
+                <span role="button" class="tempoButtonPlus" aria-label="increase tempo by 1" id="plusButton" tabindex="1"></span>
+                </div>
+                <h4 id="bpmDisplay"><output name="bpm" id="bpm">60</output><span class="bpmTag">BPM</span></h4>
+                <div class="controlButtonContainer">
+                    <button id="startButton" class="controlButton">Start</button>
+                    <button onClick="reset()" class="controlButton">Reset</button>
+                </div>
 
+            </div>
+            <div class="timer">
+                <div class="displayWrapper">
+                    <p class="timeDisplay" id="timeDisplay">10:00</p>
+                    <input type="number" step="5" id="timeInput" min="0" max="60" value="30"/>
+                </div>
+                <div class="timerButtonContainer">
+                    <button id="timerStartButton">Start</button>
+                    <button id="timerPauseButton">Pause</button>
+                    <button id="timerResetButton">Reset</button>
+                </div>
+
+
+            </div>
 
         </div>
-        <div class="metronome">
-            <div class="tempoSelectorWrapper">
-                <span role="button" class="tempoButtonMinus" aria-label="decrease tempo by 1" id="minusButton" tabindex="1"></span>
-                <p class="tempoDisplay">40</p>
-            <input type="range" min="40" max="240" value="60" id="bpmSelector" class="bpmSelector"/>
-            <p class="tempoDisplay">240</p>
-            <span role="button" class="tempoButtonPlus" aria-label="increase tempo by 1" id="plusButton" tabindex="1"></span>
-            </div>
-            <h4 id="bpmDisplay"><output name="bpm" id="bpm">60</output><span class="bpmTag">BPM</span></h4>
-            <div class="controlButtonContainer">
-                <button id="startButton" class="controlButton">Start</button>
-                <button onClick="reset()" class="controlButton">Reset</button>
-            </div>
 
-        </div>
+
         <section class="recorder">
             <div class="recorderControls">
                 <canvas class="visualiser"></canvas>

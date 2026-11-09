@@ -5,7 +5,7 @@ body {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: .5rem;
     padding: 2.5rem;
     background-size: 200% 200%;
     animation: BackgroundAnimation 20s ease infinite;
@@ -21,6 +21,18 @@ body {
         0%{background-position:0% 50%}
         50%{background-position:100% 50%}
         100%{background-position:0% 50%}
+}
+
+.title {
+    color: white;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+.firstRow {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .metronome {
@@ -248,7 +260,8 @@ body {
 #startRecordButton,
 #stopRecordButton,
 #micOff {
-    min-width: 3.5rem;
+    width: 6rem;
+
     height: 1.5rem;
     border: none;
     background-color: white;
