@@ -210,3 +210,57 @@ body {
     display: flex;
     height: 5rem;
 }
+
+.soundClips {
+    display: flex;
+    height: 300px;
+    overflow: scroll;
+    color: white;
+}
+
+.clip {
+    display: flex;
+    max-height: 3rem;
+    gap: 2rem;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete {
+    min-width: 3.5rem;
+    height: 1.5rem;
+    border: none;
+    background-color: white;
+    border-radius: 10px;
+    transition: background-color .25s ease-in-out;
+
+    &:hover:not([disabled]) {
+        background-color: red;
+        cursor: pointer;
+    }
+
+    &:hover:disabled {
+        cursor: not-allowed;
+    }
+}
+
+#startRecordButton,
+#stopRecordButton,
+#micOff {
+    min-width: 3.5rem;
+    height: 1.5rem;
+    border: none;
+    background-color: white;
+    border-radius: 10px;
+    transition: background-color .25s ease-in-out;
+
+    &:hover:not([disabled]) {
+        background-color: lightblue;
+        cursor: pointer;
+    }
+
+    &:hover:disabled {
+        cursor: not-allowed;
+    }
+}
