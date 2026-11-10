@@ -33,7 +33,7 @@ if (navigator.mediaDevices.getUserMedia) {
       mediaRecorder.stop();
       recordButton.style.background = '';
       recordButton.disabled = false;
-    }
+    };
 
     (function () {
       const audioTracks = stream.getAudioTracks()
