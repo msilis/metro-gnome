@@ -38,6 +38,7 @@ if (navigator.mediaDevices.getUserMedia) {
     (function () {
       const audioTracks = stream.getAudioTracks()
       micOffButton.textContent = "Unmute Mic";
+      recordButton.disabled = true;
       return audioTracks.forEach(track => track.enabled = !track.enabled)
     }())
 
