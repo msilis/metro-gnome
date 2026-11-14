@@ -7,9 +7,7 @@ self.onmessage = function (e) {
     timerId = this.setInterval(() => { this.postMessage('tick'); }, interval)
   }
   else if (e.data.interval) {
-    console.log('setting interval');
     interval = e.data.interval
-    console.log('interval=', interval)
     if (timerId) {
       this.clearInterval(timerId);
       timerId = this.setInterval(() => { this.postMessage('tick'); }, interval)
