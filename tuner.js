@@ -12,7 +12,7 @@ for (let octave = 0; octave <= 8; octave++) {
 
 function getClosestNote(freq) {
   if (!freq || freq < 20 || freq > 5000) return null;
-  const noteEnum = 12 * Math.log(freq / 440) + 49;
+  const noteEnum = 12 * Math.log2(freq / 440) + 49;
   const rounded = Math.round(noteEnum);
   const cents = Math.round((noteEnum - rounded) * 100);
   const octave = Math.floor((rounded + 8) / 12);
@@ -42,7 +42,7 @@ function autoCorrelate(buffer, sampleRate) {
   const threshold = 0.2;
   for (let i = 0; i < size / 2; i++) {
     if (Math.abs(buffer[i]) < threshold) {
-      r1 = 1;
+      r1 = i;
       break;
     }
   }
@@ -57,7 +57,7 @@ function autoCorrelate(buffer, sampleRate) {
 
   const c = new Array(size).fill(0);
   for (let i = 0; i < size; i++) {
-    for (let j = 0; j < size; j++) {
+    for (let j = 0; j < size - i; j++) {
       c[i] += buffer[j] * buffer[j + i];
     }
   }
@@ -75,7 +75,7 @@ function autoCorrelate(buffer, sampleRate) {
     }
   }
 
-  let t0 = d;
+  let t0 = maxPosition;
   const x1 = c[t0 - 1],
     x2 = c[t0],
     x3 = c[t0 + 1];
@@ -107,7 +107,10 @@ async function startListening() {
       }
       rms = Math.sqrt(rms / buffer.length);
 
-      //TODO: this is where I left off
+      const frequency = autoCorrelate(buffer, audioContext.sampleRate);
+      if (frequency > 0) {
+        const noteInfo = getClosestNote(frequency);
+      }
     };
   } catch (err) {
     console.error("Microphone access denied: ", err);
