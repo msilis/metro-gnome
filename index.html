@@ -1,47 +1,76 @@
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset="UTF-8" />
         <title>August and Archie Practice Tools</title>
-        <link rel="stylesheet" href="style.css">
-        <link rel="icon" type="x-image/icon" href="/assets/favicon.ico">
-        <script defer src="metronome.js" ></script>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="icon" type="x-image/icon" href="/assets/favicon.ico" />
+        <script defer src="metronome.js"></script>
         <script defer src="timer.js"></script>
         <script defer src="recorder.js"></script>
+        <script defer src="tuner.js"></script>
     </head>
     <body>
         <h3 class="title">August and Archie's Practice Tools //</h3>
         <div class="firstRow">
             <div class="metronome">
                 <div class="tempoSelectorWrapper">
-                    <span role="button" class="tempoButtonMinus" aria-label="decrease tempo by 1" id="minusButton" tabindex="1"></span>
+                    <span
+                        role="button"
+                        class="tempoButtonMinus"
+                        aria-label="decrease tempo by 1"
+                        id="minusButton"
+                        tabindex="1"
+                    ></span>
                     <p class="tempoDisplay">40</p>
-                <input type="range" min="40" max="240" value="60" id="bpmSelector" class="bpmSelector"/>
-                <p class="tempoDisplay">240</p>
-                <span role="button" class="tempoButtonPlus" aria-label="increase tempo by 1" id="plusButton" tabindex="1"></span>
+                    <input
+                        type="range"
+                        min="40"
+                        max="240"
+                        value="60"
+                        id="bpmSelector"
+                        class="bpmSelector"
+                    />
+                    <p class="tempoDisplay">240</p>
+                    <span
+                        role="button"
+                        class="tempoButtonPlus"
+                        aria-label="increase tempo by 1"
+                        id="plusButton"
+                        tabindex="1"
+                    ></span>
                 </div>
-                <h4 id="bpmDisplay"><output name="bpm" id="bpm">60</output><span class="bpmTag">BPM</span></h4>
+                <h4 id="bpmDisplay">
+                    <output name="bpm" id="bpm">60</output
+                    ><span class="bpmTag">BPM</span>
+                </h4>
                 <div class="controlButtonContainer">
-                    <button id="startButton" class="controlButton">Start</button>
-                    <button onClick="reset()" class="controlButton">Reset</button>
+                    <button id="startButton" class="controlButton">
+                        Start
+                    </button>
+                    <button onClick="reset()" class="controlButton">
+                        Reset
+                    </button>
                 </div>
-
             </div>
             <div class="timer">
                 <div class="displayWrapper">
                     <p class="timeDisplay" id="timeDisplay">10:00</p>
-                    <input type="number" step="5" id="timeInput" min="0" max="60" value="30"/>
+                    <input
+                        type="number"
+                        step="5"
+                        id="timeInput"
+                        min="0"
+                        max="60"
+                        value="30"
+                    />
                 </div>
                 <div class="timerButtonContainer">
                     <button id="timerStartButton">Start</button>
                     <button id="timerPauseButton">Pause</button>
                     <button id="timerResetButton">Reset</button>
                 </div>
-
-
             </div>
-
         </div>
-
 
         <section class="recorder">
             <div class="recorderControls">
@@ -54,6 +83,22 @@
             </div>
             <div class="soundClips"></div>
         </section>
-
+        <section class="tuner" id="tunerSection">
+            <h3 class="title">Tuner</h3>
+            <div class="tunerDisplay">
+                <span class="tunerNote" id="tunerNote">-</span>
+                <sup class="tunerOctave" id="tunerOctave"></sup>
+            </div>
+            <div class="meterContainer" role="meter">
+                <div class="meterCenterLine"></div>
+                <div class="meterInTuneRange"></div>
+                <div class="meterNeedle" id="tunerNeedle"></div>
+            </div>
+            <div class="tunerControls">
+                <button id="tunerStartButton" class="controlButton">
+                    Start
+                </button>
+            </div>
+        </section>
     </body>
 </html>

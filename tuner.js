@@ -1,4 +1,13 @@
 const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+let isListening = false;
+let tunerAudioContext = null;
+let micStream = null;
+let animFrameId = null;
+
+const tunerStartButton = document.getElementById("tunerStartButton");
+const tunerNeedle = document.getElementById("tunerNeedle");
+const octaveDisplay = document.getElementById("tunerOctave");
+const noteDisplay = document.getElementById("tunerNote");
 
 const noteFrequencies = {};
 
@@ -8,6 +17,21 @@ for (let octave = 0; octave <= 8; octave++) {
     noteFrequencies[`${note}${octave}`] =
       440 * Math.pow(2, (noteEnum - 49) / 12);
   });
+}
+
+function getCentsColour(cents) {
+  const difference = Math.abs(cents);
+
+  if (difference <= 5) {
+    return "green";
+  } else if (difference <= 15) {
+    return "yellow";
+  } else return "red";
+}
+
+function updateNoteDisplay(noteInfo) {
+  if (!noteInfo) return;
+  noteDisplay.textContent = noteInfo.note;
 }
 
 function getClosestNote(freq) {
@@ -89,16 +113,19 @@ function autoCorrelate(buffer, sampleRate) {
 
 async function startListening() {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const audioContext = new AudioContext();
-    const analyser = audioContext.createAnalyser();
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    tunerAudioContext = new AudioContext();
+    const analyser = tunerAudioContext.createAnalyser();
     analyser.fftSize = 4096;
 
-    const source = audioContext.createMediaStreamSource(stream);
+    const source = tunerAudioContext.createMediaStreamSource(micStream);
     source.connect(analyser);
 
+    const buffer = new Float32Array(analyser.fftSize);
+    isListening = true;
+    tunerStartButton.textContent = "Stop";
+
     const detect = () => {
-      const buffer = new Float32Array(analyser.fftSize);
       analyser.getFloatTimeDomainData(buffer);
 
       let rms = 0;
@@ -107,12 +134,44 @@ async function startListening() {
       }
       rms = Math.sqrt(rms / buffer.length);
 
-      const frequency = autoCorrelate(buffer, audioContext.sampleRate);
-      if (frequency > 0) {
-        const noteInfo = getClosestNote(frequency);
+      if (rms >= 0.01) {
+        const frequency = autoCorrelate(buffer, tunerAudioContext.sampleRate);
+        if (frequency > 0) {
+          const noteInfo = getClosestNote(frequency);
+          if (noteInfo) {
+            updateDisplay(noteInfo);
+          }
+        }
       }
     };
+    detect();
   } catch (err) {
     console.error("Microphone access denied: ", err);
   }
 }
+
+function stopListening() {
+  if (animFrameId) {
+    cancelAnimationFrame(animFrameId);
+    animFrameId = null;
+  }
+  if (micStream) {
+    micStream.getTracks().forEach((track) => track.stop());
+    micStream = null;
+  }
+  if (tunerAudioContext) {
+    tunerAudioContext.close();
+    tunerAudioContext = null;
+  }
+  tunerStartButton.textContent = "Start";
+  isListening = false;
+}
+
+tunerStartButton.addEventListener("click", () => {
+  console.log("start clicked");
+  if (isListening) {
+    stopListening();
+  } else {
+    startListening();
+  }
+});

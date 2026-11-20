@@ -1,4 +1,4 @@
-let audioContext = null;
+let metronomeAudioContext = null;
 let isPlaying = false;
 let startTime;
 let currentTwelveletNote;
@@ -16,87 +16,84 @@ const notesInQueue = [];
 
 let timeWorker = null;
 
-const startButton = document.getElementById('startButton')
-const bpmDisplay = document.getElementById('bpmDisplay')
-const bpmSelector = document.getElementById('bpmSelector')
-const minusButton = document.getElementById('minusButton')
-const plusButton = document.getElementById('plusButton')
-const bpm = document.getElementById('bpm')
+const startButton = document.getElementById("startButton");
+const bpmDisplay = document.getElementById("bpmDisplay");
+const bpmSelector = document.getElementById("bpmSelector");
+const minusButton = document.getElementById("minusButton");
+const plusButton = document.getElementById("plusButton");
+const bpm = document.getElementById("bpm");
 
-bpmSelector.addEventListener('change', (e) => {
-  tempo = Number(e.target.value)
-  bpm.innerHTML = e.target.value
+bpmSelector.addEventListener("change", (e) => {
+  tempo = Number(e.target.value);
+  bpm.innerHTML = e.target.value;
 
   return () => {
-    bpmSelector.removeEventListener('change', () => {
-      tempo = Number(e.target.value)
-      bpmDisplay.innerHTML = e.target.value
-    })
-  }
-})
+    bpmSelector.removeEventListener("change", () => {
+      tempo = Number(e.target.value);
+      bpmDisplay.innerHTML = e.target.value;
+    });
+  };
+});
 
 const decreaseTempoByOne = () => {
   if (tempo < 41) return;
-  tempo -= 1
+  tempo -= 1;
   bpm.innerHTML = tempo;
   bpmSelector.value = tempo;
-}
+};
 
-minusButton.addEventListener('click', decreaseTempoByOne)
-minusButton.addEventListener('keydown', (e) => {
-  if(e.key === 'Enter') decreaseTempoByOne()
-})
+minusButton.addEventListener("click", decreaseTempoByOne);
+minusButton.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") decreaseTempoByOne();
+});
 
 const increaseTempoByOne = () => {
   if (tempo <= 239) {
     tempo += 1;
     bpm.innerHTML = tempo;
     bpmSelector.value = tempo;
-  } else return
+  } else return;
+};
 
-}
-
-plusButton.addEventListener('click', increaseTempoByOne)
-plusButton.addEventListener('keydown', (e) => {
-  if(e.key === 'Enter') increaseTempoByOne()
-})
+plusButton.addEventListener("click", increaseTempoByOne);
+plusButton.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") increaseTempoByOne();
+});
 
 function reset() {
   tempo = 60;
   bpm.innerHTML = 60;
-  bpmSelector.value = 60
+  bpmSelector.value = 60;
 }
 
-function maxBeats(){
-  const beats = (meter * 12);
+function maxBeats() {
+  const beats = meter * 12;
   return beats;
 }
 
-function nextTwelvelet(){
+function nextTwelvelet() {
   const secondsPerBeat = 60.0 / tempo;
   nextNoteTime += 0.08333 * secondsPerBeat;
   currentTwelveletNote++;
 
-  if(currentTwelveletNote === maxBeats()){
+  if (currentTwelveletNote === maxBeats()) {
     currentTwelveletNote = 0;
   }
 }
 
 function calcVolume(beatVolume) {
-  return (beatVolume * masterVolume)
+  return beatVolume * masterVolume;
 }
-
 
 function scheduleNote(beatNumber, time) {
   notesInQueue.push({ note: beatNumber, time: time });
 
   if (beatNumber % 12 === 0) {
-
-    const osc = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    const osc = metronomeAudioContext.createOscillator();
+    const gainNode = metronomeAudioContext.createGain();
 
     osc.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    gainNode.connect(metronomeAudioContext.destination);
 
     if (beatNumber % maxBeats() === 0) {
       if (accentVolume > 0.25) {
@@ -105,9 +102,7 @@ function scheduleNote(beatNumber, time) {
       } else {
         gainNode.gain.value = 0;
       }
-    }
-
-    else {
+    } else {
       osc.frequency.value = 880.0;
       gainNode.gain.value = calcVolume(accentVolume);
     }
@@ -117,10 +112,8 @@ function scheduleNote(beatNumber, time) {
   }
 }
 
-
-
 function scheduler() {
-  while (nextNoteTime < audioContext.currentTime + scheduleAheadTime) {
+  while (nextNoteTime < metronomeAudioContext.currentTime + scheduleAheadTime) {
     scheduleNote(currentTwelveletNote, nextNoteTime);
     nextTwelvelet();
   }
@@ -131,30 +124,30 @@ function play() {
 
   if (isPlaying) {
     currentTwelveletNote = 0;
-    nextNoteTime = audioContext.currentTime;
-    timeWorker.postMessage('start');
+    nextNoteTime = metronomeAudioContext.currentTime;
+    timeWorker.postMessage("start");
   } else {
-    timeWorker.postMessage('stop')
+    timeWorker.postMessage("stop");
   }
 }
 
-startButton.addEventListener('click', () => {
-  play()
-  startButton.innerHTML = isPlaying ? 'Stop' : 'Start'
-})
+startButton.addEventListener("click", () => {
+  play();
+  startButton.innerHTML = isPlaying ? "Stop" : "Start";
+});
 
 function init() {
-  audioContext = new AudioContext();
-  timeWorker = new Worker('worker.js')
+  metronomeAudioContext = new AudioContext();
+  timeWorker = new Worker("worker.js");
 
   timeWorker.onmessage = function (e) {
-    if (e.data === 'tick') {
+    if (e.data === "tick") {
       scheduler();
     } else {
-      console.log('message: ', e.data)
+      console.log("message: ", e.data);
     }
-  }
-  timeWorker.postMessage({'interval': lookahead})
+  };
+  timeWorker.postMessage({ interval: lookahead });
 }
 
-window.addEventListener('load', init)
+window.addEventListener("load", init);
