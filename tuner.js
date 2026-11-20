@@ -32,6 +32,15 @@ function getCentsColour(cents) {
 function updateNoteDisplay(noteInfo) {
   if (!noteInfo) return;
   noteDisplay.textContent = noteInfo.note;
+
+  const percentage = Math.max(0, Math.min(100, 50 + noteInfo.cents));
+  const colour = getCentsColour(noteInfo.cents);
+  noteDisplay.style.color = colour;
+
+  console.log(percentage, "percentage");
+
+  tunerNeedle.style.left = `${percentage}%`;
+  noteDisplay.style.color = colour;
 }
 
 function getClosestNote(freq) {
@@ -124,6 +133,7 @@ async function startListening() {
     const buffer = new Float32Array(analyser.fftSize);
     isListening = true;
     tunerStartButton.textContent = "Stop";
+    console.log(buffer, "buffer");
 
     const detect = () => {
       analyser.getFloatTimeDomainData(buffer);
@@ -139,10 +149,12 @@ async function startListening() {
         if (frequency > 0) {
           const noteInfo = getClosestNote(frequency);
           if (noteInfo) {
-            updateDisplay(noteInfo);
+            updateNoteDisplay(noteInfo);
           }
         }
       }
+      analyser.getFloatTimeDomainData(buffer);
+      animFrameId = requestAnimationFrame(detect);
     };
     detect();
   } catch (err) {
@@ -164,11 +176,12 @@ function stopListening() {
     tunerAudioContext = null;
   }
   tunerStartButton.textContent = "Start";
+  noteDisplay.textContent = "-";
+  noteDisplay.style.color = "white";
   isListening = false;
 }
 
 tunerStartButton.addEventListener("click", () => {
-  console.log("start clicked");
   if (isListening) {
     stopListening();
   } else {
