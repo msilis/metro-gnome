@@ -20,13 +20,13 @@ body {
 
 @keyframes BackgroundAnimation {
     0% {
-        background-position: 11% 0%;
+        background-position: 22% 0%;
     }
     50% {
-        background-position: 90% 100%;
+        background-position: 50% 50%;
     }
     100% {
-        background-position: 11% 0%;
+        background-position: 22% 0%;
     }
 }
 
@@ -51,6 +51,18 @@ body {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
+}
+
+.secondRow {
+    display: flex;
+    gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+    .firstRow,
+    .secondRow {
+        flex-direction: column;
+    }
 }
 
 .metronome {
@@ -299,6 +311,7 @@ body {
     padding: 1rem;
     outline: 2px solid white;
     border-radius: 10px;
+    min-width: 25rem;
     max-width: 30rem;
     box-shadow: 4px 4px 4px white;
     display: flex;

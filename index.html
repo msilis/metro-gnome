@@ -1,6 +1,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>August and Archie Practice Tools</title>
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" type="x-image/icon" href="/assets/favicon.ico" />
@@ -71,34 +72,35 @@
                 </div>
             </div>
         </div>
-
-        <section class="recorder">
-            <div class="recorderControls">
-                <canvas class="visualiser"></canvas>
-                <div class="recorderButtons">
-                    <button id="startRecordButton">Record</button>
-                    <button id="stopRecordButton">Stop</button>
-                    <button id="micOff">Mic Off</button>
+        <div class="secondRow">
+            <section class="recorder">
+                <div class="recorderControls">
+                    <canvas class="visualiser"></canvas>
+                    <div class="recorderButtons">
+                        <button id="startRecordButton">Record</button>
+                        <button id="stopRecordButton">Stop</button>
+                        <button id="micOff">Mic Off</button>
+                    </div>
                 </div>
-            </div>
-            <div class="soundClips"></div>
-        </section>
-        <section class="tuner" id="tunerSection">
-            <h3 class="title">Tuner</h3>
-            <div class="tunerDisplay">
-                <span class="tunerNote" id="tunerNote">-</span>
-                <sup class="tunerOctave" id="tunerOctave"></sup>
-            </div>
-            <div class="meterContainer" role="meter">
-                <div class="meterCenterLine"></div>
-                <div class="meterInTuneRange"></div>
-                <div class="meterNeedle" id="tunerNeedle"></div>
-            </div>
-            <div class="tunerControls">
-                <button id="tunerStartButton" class="controlButton">
-                    Start
-                </button>
-            </div>
-        </section>
+                <div class="soundClips"></div>
+            </section>
+            <section class="tuner" id="tunerSection">
+                <h3 class="title">Tuner</h3>
+                <div class="tunerDisplay">
+                    <span class="tunerNote" id="tunerNote">-</span>
+                    <sup class="tunerOctave" id="tunerOctave"></sup>
+                </div>
+                <div class="meterContainer" role="meter">
+                    <div class="meterCenterLine"></div>
+                    <div class="meterInTuneRange"></div>
+                    <div class="meterNeedle" id="tunerNeedle"></div>
+                </div>
+                <div class="tunerControls">
+                    <button id="tunerStartButton" class="controlButton">
+                        Start
+                    </button>
+                </div>
+            </section>
+        </div>
     </body>
 </html>
