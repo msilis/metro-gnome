@@ -32,15 +32,15 @@ function getCentsColour(cents) {
 function updateNoteDisplay(noteInfo) {
   if (!noteInfo) return;
   noteDisplay.textContent = noteInfo.note;
+  octaveDisplay.textContent = noteInfo.octave;
 
   const percentage = Math.max(0, Math.min(100, 50 + noteInfo.cents));
   const colour = getCentsColour(noteInfo.cents);
   noteDisplay.style.color = colour;
 
-  console.log(percentage, "percentage");
-
   tunerNeedle.style.left = `${percentage}%`;
   noteDisplay.style.color = colour;
+  octaveDisplay.style.color = colour;
 }
 
 function getClosestNote(freq) {
@@ -50,6 +50,7 @@ function getClosestNote(freq) {
   const cents = Math.round((noteEnum - rounded) * 100);
   const octave = Math.floor((rounded + 8) / 12);
   const noteIndex = (((rounded + 8) % 12) + 12) % 12;
+
   return {
     note: notes[noteIndex],
     octave,
@@ -177,6 +178,7 @@ function stopListening() {
   tunerStartButton.textContent = "Start";
   noteDisplay.textContent = "-";
   noteDisplay.style.color = "white";
+  octaveDisplay.textContent = "";
   tunerNeedle.style.left = "50%";
   isListening = false;
 }
