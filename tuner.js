@@ -133,7 +133,6 @@ async function startListening() {
     const buffer = new Float32Array(analyser.fftSize);
     isListening = true;
     tunerStartButton.textContent = "Stop";
-    console.log(buffer, "buffer");
 
     const detect = () => {
       analyser.getFloatTimeDomainData(buffer);
@@ -178,6 +177,7 @@ function stopListening() {
   tunerStartButton.textContent = "Start";
   noteDisplay.textContent = "-";
   noteDisplay.style.color = "white";
+  tunerNeedle.style.left = "50%";
   isListening = false;
 }
 

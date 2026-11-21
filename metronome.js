@@ -90,6 +90,7 @@ function scheduleNote(beatNumber, time) {
 
   if (beatNumber % 12 === 0) {
     const osc = metronomeAudioContext.createOscillator();
+    osc.type = "triangle";
     const gainNode = metronomeAudioContext.createGain();
 
     osc.connect(gainNode);
