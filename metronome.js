@@ -90,26 +90,69 @@ function scheduleNote(beatNumber, time) {
 
   if (beatNumber % 12 === 0) {
     const osc = metronomeAudioContext.createOscillator();
-    osc.type = "triangle";
+    osc.type = "sine";
     const gainNode = metronomeAudioContext.createGain();
 
     osc.connect(gainNode);
     gainNode.connect(metronomeAudioContext.destination);
 
-    if (beatNumber % maxBeats() === 0) {
-      if (accentVolume > 0.25) {
-        osc.frequency.value = 880.0;
-        gainNode.gain.value = calcVolume(accentVolume);
-      } else {
-        gainNode.gain.value = 0;
-      }
-    } else {
-      osc.frequency.value = 880.0;
-      gainNode.gain.value = calcVolume(accentVolume);
+    // Leaving here for later in case I want accents
+    // if (beatNumber % maxBeats() === 0) {
+    //   if (accentVolume > 0.25) {
+    //     osc.frequency.value = 950.0;
+    //     gainNode.gain.value = calcVolume(accentVolume);
+    //   } else {
+    //     gainNode.gain.value = 0;
+    //   }
+    // } else {
+    //   osc.frequency.value = 880.0;
+    //   gainNode.gain.value = calcVolume(accentVolume);
+    // }
+
+    const now = audioCtx.currentTime;
+
+    const pitch = 950.0;
+    osc.frequency.setValueAtTime(pitch * 1.4, now);
+    osc.frequency.exponentialRampToValueAtTime(pitch, now + 0.015);
+    gainNode.gain.setValueAtTime(0.001, now);
+    gainNode.gain.linearRampToValueAtTime(0.8, now + 0.002);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+    // Leaving here for later in case I want accents
+    // gainNode.gain.value = calcVolume(accentVolume);
+    //
+    const bufferSize = metronomeAudioContext.sampleRate * 0.02;
+    const noiseBuffer = metronomeAudioContext.createBuffer(
+      1,
+      bufferSize,
+      audioCtx.sampleRate,
+    );
+    const data = noiseBuffer.getChannelData(0);
+
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
     }
 
-    osc.start(time);
-    osc.stop(time + noteLength);
+    const noise = metronomeAudioContext.createBufferSource();
+    noise.buffer = noiseBuffer;
+
+    const filter = metronomeAudioContext.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.setValueAtTime(pitch * 2.2, now);
+    filter.Q.setValueAtTime(4, now);
+
+    const noiseGain = metronomeAudioContext.createGain();
+    noiseGain.gain.setValueAtTime(4.4, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.015);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(metronomeAudioContext.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.1);
+
+    noise.start(now);
+    noise.stop(now + 0.02);
   }
 }
 
